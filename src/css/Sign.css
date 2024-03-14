@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+
+.log-page{
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+.log-body{
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.log-container{
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    position: relative;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.sign-in{
+    width: 400px;
+    min-height: 500px;
+}
+
+.sign-up{
+    width: 400px;
+    min-height: 580px;
+}
+
+.create-room{
+    width: 450px;
+    min-height: 400px;
+}
+
+.createNewBtn{
+    color: #512da8;
+    font-weight: 800;
+}
+
+
+.log-container span{
+    font-size: 14px;
+}
+
+.log-container a{
+    color: #333;
+    font-size: 15px;
+    text-decoration: none;
+    margin: 15px 0 10px;
+}
+
+.log-container button{
+    background-color: #512da8;
+    color: #fff;
+    font-size: 14px;
+    padding: 10px 45px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.log-container button.hidden{
+    background-color: transparent;
+    border-color: #fff;
+}
+
+.log-form{
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    height: 100%;
+}
+
+.log-container input{
+    background-color: #eee;
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 15px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+}
+
+.log-form-container{
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.log-sign{
+    left: 0;
+    width: 100%;
+}
+
+
+
+.log-social-icons{
+    margin: 20px 0;
+}
+
+.log-social-icons a{
+    border: 1px solid #ccc;
+    border-radius: 20%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 3px;
+    width: 40px;
+    height: 40px;
+}
+
+
+nav {
+	display: flex;
+	background-color: rgba(200, 210, 220, 0.2);
+	padding: 0;
+	justify-content: space-between;
+	z-index: 1;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+	box-shadow: 1px 10px 10px rgba(0, 20, 50, 0.1);
+	min-height: 50px;
+	width: 100vw;
+	align-items: center;
+}
+
+nav:hover {
+	backdrop-filter: blur(8px);
+}
+
+nav img{
+    padding: 0 20px;
+}
+
+nav a {
+	z-index: 2;
+	transition: border 0.2s ease;
+	text-decoration: none;
+	color: white;
+	padding: 15px;
+	padding-bottom: 3px;
+	padding-top: 3px;
+	margin-right: 10px;
+	border: 1px solid rgba(255, 255, 255, 0);
+	border-radius: 999px;
+}
+
+nav a:hover {
+	border: 1px solid rgba(255, 255, 255, 0.5);
+	border-radius: 999px;
+	backdrop-filter: blur(8px);
+}
+
+.nav-button {
+	transition: backdrop-filter 0.3s ease;
+	/* font-family: poppins; */
+	margin-right: 50px;
+	border: none;
+	border-radius: 9999px;
+	padding: 10px 32px;
+	font-size: 14px;
+	cursor: pointer;
+	background-color: rgba(200, 210, 250, 0.26);
+	backdrop-filter: blur(2px);
+	color: white;
+	border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.nav-button:hover {
+	background-color: #33333341;
+}
