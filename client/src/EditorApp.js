@@ -82,7 +82,7 @@ function EditorApp() {
             setJobDetails(null);
             setOutput(`Code Execution Status: Running`);
             const { data } = await axios.post(
-                "http://localhost:8000/run",
+                "http://localhost:4000/run",
                 payload
             );
             // console.log(data);
@@ -94,7 +94,7 @@ function EditorApp() {
                 setStatus("Running");
                 setOutput(`Code Execution Status: Running`);
                 const { data: dataRes } = await axios.get(
-                    "http://localhost:8000/status",
+                    "http://localhost:4000/status",
                     { params: { id: data.jobId } }
                 );
                 const { success, job, error } = dataRes;

@@ -30,6 +30,7 @@ function App() {
           <Route path="/" element={<SignIn/>}></Route>
           <Route path="/signup" element={<SignUp/>}></Route>
           <Route path="/room" element={<Room/>}></Route>
+          <Route path="/editor" element={<EditorApp/>}></Route>
           <Route path="/editor/:roomId" element={<EditorApp/>}></Route>
         </Routes>
       </BrowserRouter>

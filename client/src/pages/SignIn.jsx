@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { ReactTyped } from "react-typed";
 
 import '../css/Sign.css'
 
@@ -62,10 +63,31 @@ const Login = () => {
   return (
     <div className="log-page">
     <nav>
-      Logo
+    <img src={require('../images/codenex.png')} alt="Avatar" style={{ height: '50px'}} />
     </nav>
 
     <div className='log-body'>
+
+
+      <div className="type-card">
+        <div style={{"display":"flex","flexDirection":"column", "justifyContent":"start", "alignItems":"start"}}>
+          <h1 style={{ 'fontSize': '60px' }}>
+            CodeNex helps you {" "}
+            </h1>
+            <h1 style={{ 'fontSize': '60px', marginTop:'-30px' }}>
+            <ReactTyped strings={["Code","Create","Collaborate"]} typeSpeed={100} loop style={{"color":"#512da8"}}/>
+          </h1>
+          <div style={{"marginLeft":"-36px"}}>
+            <ul style={{"list-style-type":"none", 'fontSize':'20px', 'fontWeight':'600'}}>
+              <li>Practise Coding Questions.</li>
+              <li>Test your code on our quick compiler.</li>
+              <li>Create/Join private rooms.</li>
+              <li>Ask and Resolve doubts</li>
+            </ul>
+          </div>
+        </div>
+    </div>
+
       <div className="log-container sign-in" id="log-container">
         <div className="log-form-container log-sign">
           <div className='log-form'>
