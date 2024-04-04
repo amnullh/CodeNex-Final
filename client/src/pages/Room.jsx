@@ -121,9 +121,7 @@ const Home = () => {
             </div>
 
             <p>
-              At codehelp, you get to learn by doing. Escape tutorial hell by
-              solving real-world challenges in our interactive labs, all within
-              your browser.
+              Run, test and experiment with your code without worrying about tedious installation process in our online code editor, all within your browser.
             </p>
           </div>
           {/* 
@@ -143,9 +141,7 @@ const Home = () => {
       <div classSsName='code-card' style={{ 'marginTop':'15px'}}>
       <h1 style={{ color: "#512da8", 'text-align': 'center' }}>Code & Collab</h1>
       <p style={{ width: '450px', 'textAlign': 'center' }}>
-              At codehelp, you get to learn by doing. Escape tutorial hell by
-              solving real-world challenges in our interactive labs, all within
-              your browser.
+              Want to code together with your friends or want to join a contest created by your teacher? Create or join a room and start coding together.
             </p>
         <div className="log-container create-room" id="log-container" >
         

@@ -1,2 +1,0 @@
-// enter input here
-10

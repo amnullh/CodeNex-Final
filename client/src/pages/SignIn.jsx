@@ -82,7 +82,7 @@ const Login = () => {
               <li>Practise Coding Questions.</li>
               <li>Test your code on our quick compiler.</li>
               <li>Create/Join private rooms.</li>
-              <li>Ask and Resolve doubts</li>
+              <li>Ask and Resolve doubts.</li>
             </ul>
           </div>
         </div>
