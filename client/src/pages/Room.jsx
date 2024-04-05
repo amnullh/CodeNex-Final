@@ -9,14 +9,17 @@ import { ToastContainer } from "react-toastify";
 // import '../css/dashboard.css'
 // import '../js/home.js'
 import "../css/Sign.css";
+import FormModal from "./FormModal";
 
 const Home = () => {
   const [roomId, setRoomId] = useState("");
+  const [showModal, setShowModal] = useState(false)
 
   const createNewRoom = (e) => {
     e.preventDefault();
     const id = uuidV4();
     setRoomId(id);
+    setShowModal(true);
     toast.success("Created a new Room");
   };
 
@@ -62,6 +65,11 @@ const Home = () => {
     removeCookie("token");
     navigate("/");
   };
+
+  const openPage = () => {
+    window.location.href= '/discussion.html';
+  };
+
   return (
     <div className="log-page">
       {/* Hi {username}, <br/>*/}
@@ -74,7 +82,8 @@ const Home = () => {
           style={{ height: "50px" }}
         />
         <div style={{ display: "flex", alignItems: "center" }}>
-          <a href="#">Discussion</a>
+        {/* <Link to={"/discussion"}>Discussion</Link> */}
+        <a onClick={openPage}>Discussion</a>
           <button className="nav-button" onClick={Logout}>
             LOGOUT
           </button>
@@ -170,11 +179,17 @@ const Home = () => {
                   new room
                 </a>
               </p>
+              {showModal &&<FormModal onClose={() => setShowModal(false)}/>}
             </div>
+            
           </div>
+          
         </div>
+        
         </div>
+        
       </div>
+      
     </div>
   );
 };

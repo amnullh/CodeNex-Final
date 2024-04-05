@@ -1,72 +1,64 @@
-import React, { useState } from "react";
-import { v4 as uuidV4 } from "uuid";
-import toast from 'react-hot-toast';
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
 
-import "../css/Sign.css";
+const Room1 = () => {
+  const [showPopup, setShowPopup] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+  });
 
-const Room = () => {
-    const navigate = useNavigate();
-    const [roomId, setRoomId] = useState("");
-    const [username, setUsername] = useState("");
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+  };
 
-    const createNewRoom = (e) => {
-        e.preventDefault();
-        const id = uuidV4();
-        setRoomId(id);
-        toast.success("Created a new Room");
-      };
-    
-      const joinRoom = () => {
-        if(!roomId || !username){
-          toast.error("Room ID & Username is required");
-          return;
-        }
-    
-        navigate(`/editor/${roomId}`,{
-          state: {username}
-        });
-    
-      };
-    
-      const handleSubmit = (e) => {
-        if(e.code === 'Enter'){
-          joinRoom();
-        }
-      }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Add your form submission logic here
+    console.log(formData);
+    // Close the pop-up
+    setShowPopup(false);
+  };
 
   return (
-    <div className="log-body">
-      <div className="log-container create-room" id="log-container">
-      <div className="log-form-container log-sign-in">
-        <div className="log-form">
-        <h1>Create or Join Room</h1>
-        <input
-            type="text"
-            placeholder="Room ID"
-            onChange={(e) => setRoomId(e.target.value)}
-            value={roomId}
-            onKeyUp={handleSubmit}
-          />
-          <input
-            type="text"
-            placeholder="Username"
-            onChange={(e) => setUsername(e.target.value)}
-            value={username}
-            onKeyUp={handleSubmit}
-          />
-          <button onClick={joinRoom}>Join</button>
-          <p>
-            If you don't have an invite link, create one &nbsp;
-            <a onClick={createNewRoom} href="#" className="createNewBtn">
-              new room
-            </a>
-          </p>
+    <div>
+      <button onClick={togglePopup}>Open Form</button>
+      {showPopup && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <button onClick={togglePopup} className="close-button">Close</button>
+            <h2>Form</h2>
+            <form onSubmit={handleSubmit}>
+              <label>Name:</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+              <label>Email:</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+              <button type="submit">Submit</button>
+            </form>
+          </div>
         </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
 
-export default Room;
+export default Room1;

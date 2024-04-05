@@ -5,7 +5,6 @@ import { Toaster } from 'react-hot-toast';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/Signup';
 import EditorApp from './EditorApp';
-// import Room from './pages/Room1';
 import  Room from './pages/Room';
 
 
@@ -29,7 +28,9 @@ function App() {
         <Routes>
           <Route path="/" element={<SignIn/>}></Route>
           <Route path="/signup" element={<SignUp/>}></Route>
+          {/* <Route path="/discussion" element={<Discussion/>}></Route> */}
           <Route path="/room" element={<Room/>}></Route>
+          {/* <Route path="/sample" element={<Room1/>}></Route> */}
           <Route path="/editor" element={<EditorApp/>}></Route>
           <Route path="/editor/:roomId" element={<EditorApp/>}></Route>
         </Routes>

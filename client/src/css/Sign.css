@@ -34,6 +34,11 @@
     min-height: 580px;
 }
 
+.questions{
+    width: 1000px;
+    min-height: 800px;
+}
+
 .create-room{
     width: 450px;
     min-height: 400px;
@@ -87,7 +92,7 @@
     height: 100%;
 }
 
-.log-container input{
+.log-container input,textarea{
     background-color: #eee;
     border: none;
     margin: 8px 0;
@@ -272,3 +277,17 @@ nav a:hover {
   .button:hover svg path {
     fill: #512da8;
   }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.3); /* bg-opacity-30 */
+    backdrop-filter: blur(8px); /* backdrop-blur-sem */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  

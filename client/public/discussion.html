@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display&display=swap');
+* {
+  margin: 0;
+}
+
+body {
+  background-color: #1F242C;
+  font-family: 'Red Hat Display', sans-serif;
+  color: #FBFCFC;
+}
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+}
+
+.main-ctrls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 8px;
+  border-radius: 8px;
+  background-color: #1B1D22;
+}
+
+.comment-main {
+  background-color: #1B1D22;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.upvote-count {
+  padding: 4px 12px;
+  background-color: #1F242C;
+  border-radius: 4px;
+}
+
+.comment-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.comment-text {
+  margin-bottom: 12px;
+}
+
+.ctrl-btns {
+  background-color: #1F242C;
+  border: 1px solid #66E84C;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  width: fit-content;
+  color: #FBFCFC;
+}
+.secondary-ctrl-btns {
+  background-color: transparent;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  width: fit-content;
+  color: #FBFCFC;
+}
+
+.active-btn {
+  background-color: #66E84C;
+  color: #1F242C;
+}
+
+input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #66E84C;
+  color: #FBFCFC;
+}
+
+.hidden {
+  display: none;
+}
+
+.children {
+  margin-left: 24px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="comment-list">
+        <div class="main-ctrls">
+            <!-- <button class="delete-all-btn ctrl-btns">Delete all comments</button> -->
+            <input type="text" id="search-bar" placeholder="Search comments" class="ctrl-btns">
+            <button class="start-new-btn ctrl-btns">Add comment</button>
+            <div class="comment-bar hidden">
+                <input class="comment-input"></input>
+                <button class="close-new-btn secondary-ctrl-btns">Close</button>
+                <button class="add-new-btn ctrl-btns">Add</button>
+            </div>
+        </div>
+        <div class="comment-main">
+          <p class="comment-text">fdgkhjhdgfg</p>
+          <div class="comment-controls">
+              <p class="upvote-count">6</p>
+              <button class="upvote-btn ctrl-btns">Upvote</button>
+              <button class="downvote-btn ctrl-btns">Downvote</button>
+              <button class="reply-btn ctrl-btns">Reply</button>
+              <button class="delete-btn ctrl-btns">Delete</button>
+              <button class="toggle-replies-btn ctrl-btns">Show Replies</button>
+              <div class="reply-bar hidden">
+                  <input class="reply-input"></input>
+                  <button class="close-btn secondary-ctrl-btns">Close</button>
+                  <button class="add-btn ctrl-btns">Add</button>
+              </div>
+          </div>
+          </div>
+          <div class="children" style="display: none;"></div>
+    </div>
+</body>
+
+<script>
+    let allComments = {
+  '0': {
+    id: '0',
+    text: 'Test comment',
+    count: 5,
+    vote: 1,
+    children: [],
+  }
+};
+
+let commentList = ['0'];
+
+const toggleReplies = (e) => {
+  const commentItem = e.target.parentNode.parentNode.parentNode;
+  const childrenEl = commentItem.querySelector(".children");
+  if (childrenEl.style.display === "none") {
+    childrenEl.style.display = "block";
+    e.target.textContent = "Hide Replies";
+  } else {
+    childrenEl.style.display = "none";
+    e.target.textContent = "Show Replies";
+  }
+};
+
+const deleteComment = (e) => {
+  const commentItem = e.target.parentNode.parentNode.parentNode;
+  const key = commentItem.getAttribute("data-key");
+  
+  // Remove the comment from the allComments object
+  delete allComments[key];
+  
+  // Remove the comment from the commentList array
+  const index = commentList.indexOf(key);
+  if (index > -1) {
+    commentList.splice(index, 1);
+  }
+  
+  // Remove the comment item from the DOM
+  commentItem.remove();
+  
+  saveData();
+};
+
+const createCommentNode = () => {
+  const commentItem = document.createElement("div");
+  commentItem.classList.add("comment-item");
+  commentItem.innerHTML = `
+        <div class="comment-main">
+        <p class="comment-text"></p>
+        <div class="comment-controls">
+            <p class="upvote-count"></p>
+            <button class="upvote-btn ctrl-btns">Upvote</button>
+            <button class="downvote-btn ctrl-btns">Downvote</button>
+            <button class="reply-btn ctrl-btns">Reply</button>
+            <button class="delete-btn ctrl-btns">Delete</button>
+            <button class="toggle-replies-btn ctrl-btns">Show Replies</button>
+            <div class="reply-bar hidden">
+                <input class="reply-input"></input>
+                <button class="close-btn secondary-ctrl-btns">Close</button>
+                <button class="add-btn ctrl-btns">Add</button>
+            </div>
+        </div>
+        </div>
+        <div class="children" style="display: none;"></div>
+    `;
+  return commentItem;
+};
+const getData = () => {
+  const allCommentsStr = localStorage.getItem("allComments");
+  const commentListStr = localStorage.getItem("commentList");
+  if (allCommentsStr) allComments = JSON.parse(allCommentsStr);
+  if (commentListStr) commentList = JSON.parse(commentListStr);
+};
+
+const saveData = () => {
+  localStorage.setItem("allComments", JSON.stringify(allComments));
+  localStorage.setItem("commentList", JSON.stringify(commentList));
+};
+
+const setCommentData = (key) => {
+  const commentItem = createCommentNode();
+  commentItem.setAttribute("data-key", key);
+  commentItem.querySelector(".comment-text").innerHTML = allComments[key].text;
+  commentItem.querySelector(".upvote-count").innerHTML = allComments[key].count;
+  commentItem.querySelector(".reply-btn").addEventListener("click", startReply);
+  commentItem.querySelector(".add-btn").addEventListener("click", addReply);
+  commentItem.querySelector(".close-btn").addEventListener("click", closeReply);
+
+  const deleteBtn = commentItem.querySelector(".delete-btn");
+  deleteBtn.addEventListener("click", deleteComment);
+
+  const toggleRepliesBtn = commentItem.querySelector(".toggle-replies-btn");
+  toggleRepliesBtn.addEventListener("click", toggleReplies);
+
+  const upvoteBtn = commentItem.querySelector(".upvote-btn");
+  upvoteBtn.addEventListener("click", (e) => handleVote(e, "up"));
+  if (allComments[key].vote === 1) upvoteBtn.classList.add("active-btn");
+
+  const downvoteBtn = commentItem.querySelector(".downvote-btn");
+  downvoteBtn.addEventListener("click", (e) => handleVote(e, "down"));
+  if (allComments[key].vote === -1) downvoteBtn.classList.add("active-btn");
+
+  const childrenEl = commentItem.querySelector(".children");
+  allComments[key].children.forEach((childKey) => {
+    const newCommentEl = setCommentData(childKey);
+    childrenEl.appendChild(newCommentEl);
+  });
+
+  return commentItem;
+};
+
+const createCommentObject = (textContent) => {
+  const newId = Date.now().toString();
+  const newComment = {
+    id: newId,
+    text: textContent,
+    count: 0,
+    vote: 0,
+    children: [],
+  };
+  allComments[newId] = newComment;
+  return newId;
+};
+
+const startReply = (e) => {
+  const commentItem = e.target.parentNode.parentNode.parentNode.parentNode;
+  const replyBtn = commentItem.querySelector(".reply-btn");
+  replyBtn.classList.add("hidden");
+  const replyBar = commentItem.querySelector(".reply-bar");
+  replyBar.classList.remove("hidden");
+};
+
+const closeReply = (e) => {
+  const commentItem = e.target.parentNode.parentNode.parentNode.parentNode;
+  const replyBtn = commentItem.querySelector(".reply-btn");
+  replyBtn.classList.remove("hidden");
+  const replyBar = commentItem.querySelector(".reply-bar");
+  replyBar.classList.add("hidden");
+};
+
+const addReply = (e) => {
+  const commentItem = e.target.parentNode.parentNode.parentNode.parentNode;
+  const textBox = e.target.parentNode.querySelector(".reply-input");
+
+  const newId = createCommentObject(textBox.value);
+  textBox.value = "";
+
+  const key = commentItem.getAttribute("data-key");
+  allComments[key].children.push(newId);
+
+  const replyBtn = commentItem.querySelector(".reply-btn");
+  replyBtn.classList.remove("hidden");
+  const replyBar = commentItem.querySelector(".reply-bar");
+  replyBar.classList.add("hidden");
+
+  const childrenEl = commentItem.querySelector(".children");
+  const newCommentEl = setCommentData(newId);
+  childrenEl.appendChild(newCommentEl);
+  saveData();
+};
+
+const handleVote = (e, type) => {
+  const commentItem = e.target.parentNode.parentNode.parentNode;
+  const textEl = commentItem.querySelector(".upvote-count");
+  const key = commentItem.getAttribute("data-key");
+  const currentCount = allComments[key].count - allComments[key].vote;
+
+  const updatedCount =
+    type === "up"
+      ? allComments[key].vote === 1
+        ? currentCount
+        : currentCount + 1
+      : allComments[key].vote === -1
+      ? currentCount
+      : currentCount - 1;
+  allComments[key].count = updatedCount;
+  allComments[key].vote = updatedCount - currentCount;
+  textEl.innerHTML = updatedCount;
+
+  const upvoteBtn = commentItem.querySelector(".upvote-btn");
+  const downvoteBtn = commentItem.querySelector(".downvote-btn");
+  if (allComments[key].vote === 1) {
+    upvoteBtn.classList.add("active-btn");
+    downvoteBtn.classList.remove("active-btn");
+  } else if (allComments[key].vote === -1) {
+    upvoteBtn.classList.remove("active-btn");
+    downvoteBtn.classList.add("active-btn");
+  } else {
+    upvoteBtn.classList.remove("active-btn");
+    downvoteBtn.classList.remove("active-btn");
+  }
+  saveData();
+};
+
+const renderComments = (keys) => {
+  keys.forEach((key) => {
+    const commentItem = setCommentData(key);
+    commentListEl.appendChild(commentItem);
+  });
+};
+
+const commentListEl = document.querySelector(".comment-list");
+const startNewBtn = document.querySelector(".start-new-btn");
+const addNewBtn = document.querySelector(".add-new-btn");
+const closeNewBtn = document.querySelector(".close-new-btn");
+const deleteAllBtn = document.querySelector(".delete-all-btn");
+const commentBar = commentListEl.querySelector(".comment-bar");
+
+const startNewComment = (e) => {
+  startNewBtn.classList.add("hidden");
+  commentBar.classList.remove("hidden");
+};
+
+const closeNewComment = (e) => {
+  startNewBtn.classList.remove("hidden");
+  commentBar.classList.add("hidden");
+};
+
+const addNewComment = (e) => {
+  const textBox = e.target.parentNode.querySelector(".comment-input");
+
+  const newId = createCommentObject(textBox.value);
+  textBox.value = "";
+  commentList.push(newId);
+
+  const commentBar = commentListEl.querySelector(".comment-bar");
+  commentBar.classList.add("hidden");
+  startNewBtn.classList.remove("hidden");
+
+  const commentItem = setCommentData(newId);
+  commentListEl.appendChild(commentItem);
+  saveData();
+};
+
+
+
+startNewBtn.addEventListener("click", startNewComment);
+addNewBtn.addEventListener("click", addNewComment);
+closeNewBtn.addEventListener("click", closeNewComment);
+
+
+const searchComments = (searchTerm) => {
+  const results = [];
+  for (let key in allComments) {
+    if (allComments[key].text.includes(searchTerm)) {
+      results.push(allComments[key]);
+    }
+  }
+  return results;
+};
+
+const handleSearch = (e) => {
+  const searchTerm = e.target.value;
+  
+  // Clear the comment items
+  const commentItems = document.querySelectorAll('.comment-item');
+  commentItems.forEach((item) => item.remove());
+  
+  if (searchTerm) {
+    // If there is a search term, render the search results
+    const results = searchComments(searchTerm);
+    renderComments(results.map(comment => comment.id));
+  } else {
+    // If the search bar is cleared, render all comments
+    renderComments(commentList);
+  }
+};
+
+
+// Add this event listener
+document.getElementById('search-bar').addEventListener('input', handleSearch);
+
+
+
+
+
+
+getData();
+renderComments();
+
+</script>
+</html>
